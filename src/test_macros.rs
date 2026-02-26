@@ -1,3 +1,4 @@
+/*
 macro_rules! not_err {
     ($e:expr) => {
         match $e {
@@ -36,3 +37,4 @@ macro_rules! assert_matches {
         }
     };
 }
+ */

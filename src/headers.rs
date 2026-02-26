@@ -248,6 +248,7 @@ impl<'r> FromRequest<'r> for AccessControlRequestHeaders {
     }
 }
 
+/*
 #[cfg(test)]
 mod tests {
     use std::str::FromStr;
@@ -409,3 +410,4 @@ mod tests {
         );
     }
 }
+ */

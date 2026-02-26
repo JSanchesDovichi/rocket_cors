@@ -1,15 +1,15 @@
 //! This crate tests using `rocket_cors` using Fairings
-use rocket::http::hyper;
+//use rocket::http::hyper;
 use rocket::http::Method;
 use rocket::http::{Header, Status};
 use rocket::local::blocking::Client;
 use rocket::{get, routes};
 use rocket_cors::*;
 
-static ORIGIN: http::header::HeaderName = hyper::header::ORIGIN;
-static ACCESS_CONTROL_REQUEST_METHOD: http::header::HeaderName =
+static ORIGIN: hyper::header::HeaderName = hyper::header::ORIGIN;
+static ACCESS_CONTROL_REQUEST_METHOD: hyper::header::HeaderName =
     hyper::header::ACCESS_CONTROL_REQUEST_METHOD;
-static ACCESS_CONTROL_REQUEST_HEADERS: http::header::HeaderName =
+static ACCESS_CONTROL_REQUEST_HEADERS: hyper::header::HeaderName =
     hyper::header::ACCESS_CONTROL_REQUEST_HEADERS;
 
 #[get("/")]

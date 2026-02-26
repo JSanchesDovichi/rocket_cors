@@ -1,5 +1,5 @@
 //! This crate tests using `rocket_cors` using manual mode
-use rocket::http::hyper;
+//use rocket::http::hyper;
 use rocket::http::Method;
 use rocket::http::{Header, Status};
 use rocket::local::blocking::Client;
@@ -8,10 +8,10 @@ use rocket::State;
 use rocket::{get, options, routes};
 use rocket_cors::*;
 
-static ORIGIN: http::header::HeaderName = hyper::header::ORIGIN;
-static ACCESS_CONTROL_REQUEST_METHOD: http::header::HeaderName =
+static ORIGIN: hyper::header::HeaderName = hyper::header::ORIGIN;
+static ACCESS_CONTROL_REQUEST_METHOD: hyper::header::HeaderName =
     hyper::header::ACCESS_CONTROL_REQUEST_METHOD;
-static ACCESS_CONTROL_REQUEST_HEADERS: http::header::HeaderName =
+static ACCESS_CONTROL_REQUEST_HEADERS: hyper::header::HeaderName =
     hyper::header::ACCESS_CONTROL_REQUEST_HEADERS;
 
 /// Using a borrowed `Cors`
@@ -24,7 +24,7 @@ fn cors(options: &State<Cors>) -> impl Responder<'_, '_> {
 
 #[get("/panic")]
 fn panicking_route(options: &State<Cors>) -> impl Responder<'_, '_> {
-    options.inner().respond_borrowed(|_| {
+    options.inner().respond_borrowed::<_, ()>(|_| {
         panic!("This route will panic");
     })
 }

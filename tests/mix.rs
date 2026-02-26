@@ -2,7 +2,7 @@
 //!
 //! In this example, you typically have an application wide `Cors` struct except for one specific
 //! `ping` route that you want to allow all Origins to access.
-use rocket::http::hyper;
+//use rocket::http::hyper;
 use rocket::http::{Header, Method, Status};
 use rocket::local::blocking::Client;
 use rocket::response::Responder;
@@ -10,10 +10,10 @@ use rocket::{get, options, routes};
 
 use rocket_cors::{AllowedHeaders, AllowedOrigins, CorsOptions, Guard};
 
-static ORIGIN: http::header::HeaderName = hyper::header::ORIGIN;
-static ACCESS_CONTROL_REQUEST_METHOD: http::header::HeaderName =
+static ORIGIN: hyper::header::HeaderName = hyper::header::ORIGIN;
+static ACCESS_CONTROL_REQUEST_METHOD: hyper::header::HeaderName =
     hyper::header::ACCESS_CONTROL_REQUEST_METHOD;
-static ACCESS_CONTROL_REQUEST_HEADERS: http::header::HeaderName =
+static ACCESS_CONTROL_REQUEST_HEADERS: hyper::header::HeaderName =
     hyper::header::ACCESS_CONTROL_REQUEST_HEADERS;
 
 /// The "usual" app route

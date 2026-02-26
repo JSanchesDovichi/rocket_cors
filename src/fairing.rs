@@ -3,7 +3,8 @@
 #[allow(unused_imports)]
 use ::log::{error, info};
 use rocket::http::{self, uri::Origin, Status};
-use rocket::{self, error_, info_, outcome::Outcome, Request};
+//use rocket::{self, error_, info_, outcome::Outcome, Request};
+use rocket::{self, outcome::Outcome, Request};
 
 use crate::{
     actual_request_response, origin, preflight_response, request_headers, validate, Cors, Error,
@@ -30,7 +31,8 @@ impl rocket::route::Handler for FairingErrorRoute {
             .param::<u16>(0)
             .unwrap_or(Ok(0))
             .unwrap_or_else(|e| {
-                error_!("Fairing Error Handling Route error: {:?}", e);
+                //error_!("Fairing Error Handling Route error: {:?}", e);
+                rocket::error!("Fairing Error Handling Route error: {:?}", e);
                 500
             });
         let status = Status::from_code(status).unwrap_or(Status::InternalServerError);
@@ -88,10 +90,13 @@ fn on_response_wrapper(
     // TODO: Is there anyway we can make this smarter? Only modify status codes for
     // requests where an actual route exist?
     if request.method() == http::Method::Options && request.route().is_none() {
+        //TODO: FIXME
+        /*
         info_!(
             "CORS Fairing: Turned missing route {} into an OPTIONS pre-flight request",
             request
         );
+         */
         response.set_status(Status::NoContent);
         let _ = response.body_mut().take();
     }
@@ -120,7 +125,8 @@ impl rocket::fairing::Fairing for Cors {
         let result = match validate(self, request) {
             Ok(_) => CorsValidation::Success,
             Err(err) => {
-                error_!("CORS Error: {}", err);
+                rocket::trace::error!("CORS Error: {}", err);
+                //error_!("CORS Error: {}", err);
                 let status = err.status();
                 route_to_fairing_error_handler(self, status.code, request);
                 CorsValidation::Failure
@@ -132,7 +138,8 @@ impl rocket::fairing::Fairing for Cors {
 
     async fn on_response<'r>(&self, request: &'r Request<'_>, response: &mut rocket::Response<'r>) {
         if let Err(err) = on_response_wrapper(self, request, response) {
-            error_!("Fairings on_response error: {}\nMost likely a bug", err);
+            rocket::trace::error!("Fairings on_response error: {}\nMost likely a bug", err);
+            //error_!("Fairings on_response error: {}\nMost likely a bug", err);
             response.set_status(Status::InternalServerError);
             let _ = response.body();
         }
@@ -197,7 +204,7 @@ mod tests {
         let expected_uri = format!("{}/<status>", CORS_ROOT);
         let error_route = rocket
             .routes()
-            .find(|r| r.method == Method::Get && r.uri.to_string() == expected_uri);
+            .find(|r| r.method == Option::from(Method::Get) && r.uri.to_string() == expected_uri);
         assert!(error_route.is_some());
     }
 
