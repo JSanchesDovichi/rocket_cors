@@ -1997,7 +1997,7 @@ impl rocket::route::Handler for CatchAllOptionsRouteHandler {
     ) -> rocket::route::Outcome<'r> {
         let guard: Guard<'_> = match request.guard().await {
             Outcome::Success(guard) => guard,
-            Outcome::Error((status, _)) => return rocket::route::Outcome::Error(status),
+            Outcome::Error((status, _)) => return Outcome::Error(status),
             Outcome::Forward(_) => unreachable!("Should not be reachable"),
         };
 
@@ -2036,7 +2036,7 @@ mod tests {
 
         CorsOptions {
             allowed_origins,
-            allowed_methods: vec![http::Method::Get]
+            allowed_methods: vec![Method::Get]
                 .into_iter()
                 .map(From::from)
                 .collect(),
@@ -2085,7 +2085,7 @@ mod tests {
         let cors_options_from_builder = CorsOptions::default()
             .allowed_origins(allowed_origins)
             .allowed_methods(
-                vec![http::Method::Get]
+                vec![Method::Get]
                     .into_iter()
                     .map(From::from)
                     .collect(),
@@ -2561,7 +2561,7 @@ mod tests {
         use serde_test::{assert_tokens, Token};
 
         let test = MethodTest {
-            method: From::from(http::Method::Get),
+            method: From::from(Method::Get),
         };
 
         assert_tokens(
