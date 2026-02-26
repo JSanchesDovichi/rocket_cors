@@ -24,7 +24,7 @@ fn cors(options: &State<Cors>) -> impl Responder<'_, '_> {
 
 #[get("/panic")]
 fn panicking_route(options: &State<Cors>) -> impl Responder<'_, '_> {
-    options.inner().respond_borrowed(|_| {
+    options.inner().respond_borrowed::<_, ()>(|_| {
         panic!("This route will panic");
     })
 }

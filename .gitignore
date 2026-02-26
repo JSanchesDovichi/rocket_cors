@@ -2,3 +2,7 @@ target/
 **/*.rs.bk
 Cargo.lock
 **/*.rs.fmt
+/.idea/.gitignore
+/.idea/modules.xml
+/.idea/rocket_cors.iml
+/.idea/vcs.xml
